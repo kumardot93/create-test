@@ -43,6 +43,18 @@ const Test = (state = { active: -1, questions: [], fields: {}, changed: 0 }, act
 			state.fields.description = action.payload;
 			state.changed = 1;
 			break;
+		case 'updateTestAccess':
+			state.fields.access = action.payload;
+			state.changed = 1;
+			break;
+		case 'updateTestAccessKey':
+			state.fields.accessKey = action.payload;
+			state.changed = 1;
+			break;
+		case 'updateTestDuration':
+			state.fields.duration = action.payload;
+			state.changed = 1;
+			break;
 		case 'updateActiveQuestionText':
 			state.questions[state.active].fields.text = action.payload;
 			state.questions[state.active].changed = 1;
@@ -61,6 +73,11 @@ const Test = (state = { active: -1, questions: [], fields: {}, changed: 0 }, act
 		case 'updateActiveQuestionType':
 			state.questions[state.active].fields.type = action.payload;
 			state.questions[state.active].changed = 1;
+			if (action.payload == 'O' || action.payload == 'M') {
+				state.questions[state.active].fields.answer = '0000';
+			} else {
+				state.questions[state.active].fields.answer = '';
+			}
 			state.questions[state.active] = { ...state.questions[state.active] };
 			break;
 		case 'updateActiveChoices':

@@ -30,7 +30,7 @@ export function AddingToBuffer() {
 		}
 	//Push the index of the last active question to the buffer of Socket State if there is any change
 	if (test.active === -1 && test.changed === 1) {
-		let dict = { type: 'testUpdate', payload: { title: test.fields.title, description: test.fields.description } };
+		let dict = { type: 'testUpdate', payload: test.fields };
 		dict = JSON.stringify(dict);
 		store.dispatch(addToDataBuffer(dict));
 	}
@@ -66,7 +66,6 @@ export function updateMarks(marks) {
 }
 
 export function updateType(val) {
-	console.log(val);
 	return {
 		type: 'updateActiveQuestionType',
 		payload: val
@@ -97,6 +96,25 @@ export function updateTitle(data) {
 export function updateDescription(data) {
 	return {
 		type: 'updateTestDescription',
+		payload: data
+	};
+}
+
+export function updateTestAccess(data) {
+	return {
+		type: 'updateTestAccess',
+		payload: data
+	};
+}
+export function updateTestAccessKey(data) {
+	return {
+		type: 'updateTestAccessKey',
+		payload: data
+	};
+}
+export function updateTestDuration(data) {
+	return {
+		type: 'updateTestDuration',
 		payload: data
 	};
 }

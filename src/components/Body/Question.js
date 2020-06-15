@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styles from './css/Question.module.css';
 import Choices from './Choices.js';
 import Image from './Image.js';
+import Test from './Test.js';
 
 import { connect } from 'react-redux';
 import {
@@ -16,30 +17,13 @@ import {
 
 class Question extends Component {
 	render() {
-		console.log('test data:', this.props.test);
 		return (
 			<div id={styles.questionMain} className="p-1 ml-2 flex-grow-1 mr-1 bg-light pr-4">
 				{this.props.question === undefined || this.props.active === -1 ? (
 					// <div className="d-flex flex-row justify-content-center align-items-center h-100 w-100">
 					// 	<h1 className="text-muted">No Question Selected</h1>
 					// </div>
-					<div className="p-4">
-						<label>Test Title:</label>
-						<input
-							type="text"
-							className="form-control "
-							value={this.props.test.fields.title}
-							onChange={(event) => this.props.updateTitle(event.target.value)}
-						/>
-						<label className="mt-3">Description:</label>
-						<textarea
-							className="form-control mb-4"
-							id={styles.desc}
-							rows="15"
-							value={this.props.test.fields.description}
-							onChange={(event) => this.props.updateDescription(event.target.value)}
-						/>
-					</div>
+					<Test />
 				) : (
 					<React.Fragment>
 						<div className="d-flex flex-row">
@@ -65,7 +49,7 @@ class Question extends Component {
 							''
 						)}
 
-						{this.props.question.fields.type !== 'D' ? (
+						{this.props.question.fields.type == 'F' ? (
 							<React.Fragment>
 								<label className="ml-4 pl-4 mt-4">Answer:</label>
 								<input
@@ -85,7 +69,8 @@ class Question extends Component {
 							<input
 								className={[ 'form-control ml-4', styles.marksinp ].join(' ')}
 								value={this.props.question.fields.marks}
-								onChange={(ev) => this.props.updateMarks(ev.target.value)}
+								type="number"
+								onChange={(ev) => this.props.updateMarks(parseInt(ev.target.value))}
 							/>
 							<br />
 							<label className="mt-4">Question Type:</label>
@@ -122,9 +107,7 @@ const mapDispatchToProps = (dispatch) => {
 		updateActiveQuestionText: (text) => dispatch(updateActiveQuestionText(text)),
 		updateAnswer: (ans) => dispatch(updateAnswer(ans)),
 		updateMarks: (marks) => dispatch(updateMarks(marks)),
-		updateType: (val) => dispatch(updateType(val)),
-		updateTitle: (data) => dispatch(updateTitle(data)),
-		updateDescription: (data) => dispatch(updateDescription(data))
+		updateType: (val) => dispatch(updateType(val))
 	};
 };
 

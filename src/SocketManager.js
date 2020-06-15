@@ -21,7 +21,7 @@ class SocketManager extends Component {
 	};
 
 	NewWebSocket = () => {
-		this.ws = new WebSocket('ws://' + window.hostName + '/ws/material/testMaker/');
+		this.ws = new WebSocket('ws://' + window.hostName + ':8000' + '/ws/material/testMaker/');
 
 		//When the socket wil open tis method will will send the socket to redux ScketState and initilize the backend will the test
 		this.ws.onopen = () => {
