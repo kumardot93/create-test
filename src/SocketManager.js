@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 
 import store from './redux/Store.js';
 import { connect } from 'react-redux';
-import { imageUploaded, AddingToBuffer } from './redux/actions/Test.js';
+import { imageUploaded, updateActive } from './redux/actions/Test.js';
 import { setSocket, connected, sending, saved, disconnected, dataBufferShift } from './redux/actions/SocketState.js';
 
 class SocketManager extends Component {
@@ -21,7 +21,7 @@ class SocketManager extends Component {
 	};
 
 	NewWebSocket = () => {
-		this.ws = new WebSocket('ws://' + window.location.origin + ':8000' + '/ws/material/testMaker/');
+		this.ws = new WebSocket('ws://' + window.hostName + '/ws/material/testMaker/');
 
 		//When the socket wil open tis method will will send the socket to redux ScketState and initilize the backend will the test
 		this.ws.onopen = () => {
@@ -102,7 +102,12 @@ class SocketManager extends Component {
 		this.BufferManager();
 		return (
 			<React.Fragment>
-				<button className="float-right mr-4 mb-4 mt-1 btn btn-success" onClick={AddingToBuffer}>
+				<button
+					className="float-right mr-4 mb-4 mt-1 btn btn-success"
+					onClick={() => {
+						this.props.updateActive(this.props.active); //To add data to buffer
+					}}
+				>
 					save
 				</button>
 			</React.Fragment>
@@ -112,6 +117,7 @@ class SocketManager extends Component {
 
 const mapStateToProps = (state) => {
 	return {
+		active: state.Test.active,
 		dataBuffer: state.SocketState.dataBuffer,
 		buffer: state.SocketState.buffer,
 		isready: state.SocketState.isready
@@ -126,7 +132,8 @@ const mapDispatchToProps = (dispatch) => {
 		saved: () => dispatch(saved()),
 		imageUploaded: (index, image) => dispatch(imageUploaded(index, image)),
 		dataBufferShift: () => dispatch(dataBufferShift()),
-		disconnected: () => dispatch(disconnected())
+		disconnected: () => dispatch(disconnected()),
+		updateActive: (index) => dispatch(updateActive(index))
 	};
 };
 
