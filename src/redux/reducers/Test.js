@@ -1,3 +1,5 @@
+import { act } from 'react-dom/test-utils';
+
 const Test = (state = { active: -1, questions: [], fields: {}, changed: 0 }, action) => {
 	state = { ...state };
 	switch (action.type) {
@@ -26,6 +28,12 @@ const Test = (state = { active: -1, questions: [], fields: {}, changed: 0 }, act
 				state.changed = 0;
 			}
 			state.active = state.questions.length - 1;
+			break;
+		case 'updatePk':
+			console.log(action);
+			state.questions[action.payload.index].pk = action.payload.pk;
+			state.questions[action.payload.index] = { ...state.questions[action.payload.index] };
+			console.log(state.questions[action.payload.index]);
 			break;
 		case 'updateActive':
 			if (state.active !== -1) {

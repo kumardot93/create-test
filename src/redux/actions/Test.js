@@ -21,6 +21,13 @@ export function newQuestion() {
 	};
 }
 
+export function updatePk(index, pk) {
+	return {
+		type: 'updatePk',
+		payload: { index, pk }
+	};
+}
+
 export function AddingToBuffer() {
 	let test = store.getState().Test;
 	if (test.active !== -1)

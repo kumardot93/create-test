@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 
 import store from './redux/Store.js';
 import { connect } from 'react-redux';
-import { imageUploaded, updateActive } from './redux/actions/Test.js';
+import { imageUploaded, updateActive, updatePk } from './redux/actions/Test.js';
 import { setSocket, connected, sending, saved, disconnected, dataBufferShift } from './redux/actions/SocketState.js';
 
 class SocketManager extends Component {
@@ -36,6 +36,12 @@ class SocketManager extends Component {
 					this.props.socketConnected();
 					break;
 				case 'saved':
+					if ((msg.code = 'SNQ')) {
+						let socketState = store.getState().SocketState;
+						let index = socketState.buffer[0];
+						console.log('index: ', index);
+						store.dispatch(updatePk(index, msg.key));
+					}
 					this.props.saved();
 					break;
 				case 'imageUploaded':

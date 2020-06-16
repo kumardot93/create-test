@@ -77,7 +77,29 @@ class Test extends Component {
 						onChange={(ev) => this.props.newAccessKey(ev.target.value)}
 					/>
 				</div>
-				<div className="float-right">
+
+				<div className="mt-4">
+					<label>Link:</label>
+					<input
+						className="ml-2 form-control w-50 d-inline"
+						value={window.location.origin + '/material/student-test/' + this.props.test.pk}
+					>
+						{/* {window.location.origin + '/material/student-test/' + this.props.test.pk} */}
+					</input>
+					<button
+						className="material-icons ml-2 p-0 btn btn-light"
+						onClick={(ev) => {
+							let link = ev.target.previousSibling;
+							link.select();
+							link.setSelectionRange(0, 99999);
+							document.execCommand('copy');
+						}}
+					>
+						file_copy
+					</button>
+					<label className="d-block">Share this link with the students</label>
+				</div>
+				<div className="float-right mt-2">
 					<label>No. of Questions: {this.props.questions.length}</label>
 					<br />
 					<label>Marks: {marks}</label>
