@@ -35,9 +35,21 @@ function SocketStatus(props) {
 				</h6>
 			);
 			break;
+		case 'error':
+			disp = (
+				<h6
+					className="text-muted"
+					id={styles.status}
+					style={{ fontSize: '40%', marginTop: '-14px', marginLeft: '-6px' }}
+				>
+					Error: Your changes won't be save try refreshing the page and report if error prsists
+				</h6>
+			);
+			break;
 		default:
 			break;
 	}
+
 	return <div className="ml-4 pb-0 mt-4">{disp}</div>;
 }
 

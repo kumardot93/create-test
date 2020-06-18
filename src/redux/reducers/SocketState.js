@@ -37,6 +37,9 @@ const SocketState = (
 		case 'addToDataBuffer':
 			state.dataBuffer = [ ...state.dataBuffer, action.payload ];
 			break;
+		case 'SocketError':
+			state.status = 'error';
+			break;
 		default:
 			break;
 	}

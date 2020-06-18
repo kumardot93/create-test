@@ -5,32 +5,42 @@ import React, { Component } from 'react';
 import store from './redux/Store.js';
 import { connect } from 'react-redux';
 import { imageUploaded, updateActive, updatePk } from './redux/actions/Test.js';
-import { setSocket, connected, sending, saved, disconnected, dataBufferShift } from './redux/actions/SocketState.js';
+import {
+	setSocket,
+	connected,
+	sending,
+	saved,
+	disconnected,
+	dataBufferShift,
+	socketError
+} from './redux/actions/SocketState.js';
 
 class SocketManager extends Component {
 	constructor(props) {
 		super(props);
+		this.error = 0;
 		this.ws = null;
 	}
 
-	InitilizeBackend = () => { // initilizing backend for test
-		let key = extractKey();    //getting pk of test
+	InitilizeBackend = () => {
+		// initilizing backend for test
+		let key = extractKey(); //getting pk of test
 		key = parseInt(key);
 		let raw_data = { type: 'initilization', payload: key }; //formatting according to backend
-		this.ws.send(JSON.stringify(raw_data)); 
+		this.ws.send(JSON.stringify(raw_data));
 	};
 
 	NewWebSocket = () => {
 		let p = window.location.protocol;
 		let scheme = 'wss://';
 		if (p == 'http:') scheme = 'ws://'; // adjusting for ws and wss
-		
+
 		this.ws = new WebSocket(scheme + window.hostName + '/ws/material/testMaker/');
 
 		//When the socket wil open tis method will will send the socket to redux ScketState and initilize the backend will the test
 		this.ws.onopen = () => {
 			this.props.setSocket(this.ws);
-			this.InitilizeBackend(); //initilizing backend for the test 
+			this.InitilizeBackend(); //initilizing backend for the test
 		};
 
 		this.ws.onmessage = (ev) => {
@@ -40,23 +50,27 @@ class SocketManager extends Component {
 					this.props.socketConnected(); // setting is ready flag of socket state to 1
 					break;
 				case 'saved': // saved question
-					if ((msg.code = 'SNQ')) { //if saved question was new question
+					this.error = 0;
+					if ((msg.code = 'SNQ')) {
+						//if saved question was new question
 						let socketState = store.getState().SocketState;
 						let index = socketState.buffer[0]; //index of the last send question data
-						store.dispatch(updatePk(index, msg.key));   // updating pk of new question after saving to backend
+						store.dispatch(updatePk(index, msg.key)); // updating pk of new question after saving to backend
 					}
-					this.props.saved();  //shifting buffer and setting is ready flag to 1 for next data transfer
+					this.props.saved(); //shifting buffer and setting is ready flag to 1 for next data transfer
 					break;
 				case 'imageUploaded':
-					this.props.imageUploaded(msg.index, msg.image);  // setting image in test.question after saved in backend
+					this.error = 0;
+					this.props.imageUploaded(msg.index, msg.image); // setting image in test.question after saved in backend
 					this.props.dataBufferShift();
 					break;
 				case 'dataUploaded':
-					this.props.dataBufferShift();  //shifting the data buffer array and setting the is ready flag to 1
+					this.error = 0;
+					this.props.dataBufferShift(); //shifting the data buffer array and setting the is ready flag to 1
 					break;
 				case 'error':
 					switch (msg.code) {
-						case 'NI':  // not initilized error thus initilize again
+						case 'NI': // not initilized error thus initilize again
 							this.props.disconnected();
 							this.InitilizeBackend();
 							break;
@@ -72,14 +86,22 @@ class SocketManager extends Component {
 
 		// if the socket closes thisfunction will to try to reconnect after 5 seconds
 		this.ws.onclose = (ev) => {
-			this.props.disconnected();
-			setTimeout(this.NewWebSocket, 5000);
+			if (this.error === 0) {
+				this.props.disconnected();
+				setTimeout(this.NewWebSocket, 5000);
+			}
 		};
 
 		//if there is any error in connection this function will try to reconnect after 15 seconds
 		this.ws.onerror = (ev) => {
-			this.props.disconnected();
-			setTimeout(this.NewWebSocket, 15000);
+			console.log('error');
+			this.error += 1;
+			if (this.error < 5) {
+				this.props.disconnected();
+				setTimeout(this.NewWebSocket, 5000);
+			} else {
+				this.props.SocketError();
+			}
 		};
 	};
 
@@ -87,7 +109,7 @@ class SocketManager extends Component {
 		this.NewWebSocket(); //creating new websocket and setting the socket parameters on the component mounts
 	};
 
-	BufferManager = () => {	
+	BufferManager = () => {
 		if (this.props.isready === 0) return;
 		let questions = store.getState().Test.questions;
 		if (this.props.buffer.length !== 0) {
@@ -97,12 +119,12 @@ class SocketManager extends Component {
 				payload: qstn
 			};
 			data = JSON.stringify(data);
-			this.props.sendingData();
+			this.props.sendingData(); //setting the socket status to saving and is ready flag to 0
 			this.ws.send(data);
 			return;
 		} else if (this.props.dataBuffer.length !== 0) {
 			let data = this.props.dataBuffer[0];
-			this.props.sendingData();
+			this.props.sendingData(); //setting the socket status to saving and is ready flag to 0
 			this.ws.send(data);
 		}
 	};
@@ -142,7 +164,8 @@ const mapDispatchToProps = (dispatch) => {
 		imageUploaded: (index, image) => dispatch(imageUploaded(index, image)),
 		dataBufferShift: () => dispatch(dataBufferShift()),
 		disconnected: () => dispatch(disconnected()),
-		updateActive: (index) => dispatch(updateActive(index))
+		updateActive: (index) => dispatch(updateActive(index)),
+		SocketError: () => dispatch(socketError())
 	};
 };
 

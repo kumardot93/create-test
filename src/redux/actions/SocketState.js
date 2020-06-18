@@ -1,4 +1,5 @@
 export function setSocket(ws) {
+	//initilize the socket to soket state
 	return {
 		type: 'setSocket',
 		payload: ws
@@ -13,6 +14,7 @@ export function addToBuffer(index) {
 }
 
 export function connected() {
+	//set is ready flag to 1
 	return {
 		type: 'connected',
 		payload: null
@@ -27,6 +29,7 @@ export function sending() {
 }
 
 export function saved() {
+	//is ready flag to 1 and  update socket status and shift the buffer array
 	return {
 		type: 'savedData',
 		payload: null
@@ -48,8 +51,16 @@ export function addToDataBuffer(data) {
 }
 
 export function dataBufferShift() {
+	//is ready flag to 1 and  update socket status and shift the  data buffer
 	return {
 		type: 'dataBufferShift',
+		payload: null
+	};
+}
+
+export function socketError() {
+	return {
+		type: 'SocketError',
 		payload: null
 	};
 }
