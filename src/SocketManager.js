@@ -13,50 +13,50 @@ class SocketManager extends Component {
 		this.ws = null;
 	}
 
-	InitilizeBackend = () => {
-		let key = extractKey();
+	InitilizeBackend = () => { // initilizing backend for test
+		let key = extractKey();    //getting pk of test
 		key = parseInt(key);
-		let raw_data = { type: 'initilization', payload: key };
-		this.ws.send(JSON.stringify(raw_data));
+		let raw_data = { type: 'initilization', payload: key }; //formatting according to backend
+		this.ws.send(JSON.stringify(raw_data)); 
 	};
 
 	NewWebSocket = () => {
 		let p = window.location.protocol;
 		let scheme = 'wss://';
-		if (p == 'http:') scheme = 'ws://';
+		if (p == 'http:') scheme = 'ws://'; // adjusting for ws and wss
+		
 		this.ws = new WebSocket(scheme + window.hostName + '/ws/material/testMaker/');
 
 		//When the socket wil open tis method will will send the socket to redux ScketState and initilize the backend will the test
 		this.ws.onopen = () => {
 			this.props.setSocket(this.ws);
-			this.InitilizeBackend();
+			this.InitilizeBackend(); //initilizing backend for the test 
 		};
 
 		this.ws.onmessage = (ev) => {
-			let msg = JSON.parse(ev.data);
+			let msg = JSON.parse(ev.data); // received data as json string so parse
 			switch (msg.type) {
 				case 'connected':
-					this.props.socketConnected();
+					this.props.socketConnected(); // setting is ready flag of socket state to 1
 					break;
-				case 'saved':
-					if ((msg.code = 'SNQ')) {
+				case 'saved': // saved question
+					if ((msg.code = 'SNQ')) { //if saved question was new question
 						let socketState = store.getState().SocketState;
-						let index = socketState.buffer[0];
-						console.log('index: ', index);
-						store.dispatch(updatePk(index, msg.key));
+						let index = socketState.buffer[0]; //index of the last send question data
+						store.dispatch(updatePk(index, msg.key));   // updating pk of new question after saving to backend
 					}
-					this.props.saved();
+					this.props.saved();  //shifting buffer and setting is ready flag to 1 for next data transfer
 					break;
 				case 'imageUploaded':
+					this.props.imageUploaded(msg.index, msg.image);  // setting image in test.question after saved in backend
 					this.props.dataBufferShift();
-					this.props.imageUploaded(msg.index, msg.image);
 					break;
 				case 'dataUploaded':
-					this.props.dataBufferShift();
+					this.props.dataBufferShift();  //shifting the data buffer array and setting the is ready flag to 1
 					break;
 				case 'error':
 					switch (msg.code) {
-						case 'NI':
+						case 'NI':  // not initilized error thus initilize again
 							this.props.disconnected();
 							this.InitilizeBackend();
 							break;
@@ -84,12 +84,12 @@ class SocketManager extends Component {
 	};
 
 	componentDidMount = () => {
-		this.NewWebSocket();
+		this.NewWebSocket(); //creating new websocket and setting the socket parameters on the component mounts
 	};
 
-	BufferManager = () => {
-		let questions = store.getState().Test.questions;
+	BufferManager = () => {	
 		if (this.props.isready === 0) return;
+		let questions = store.getState().Test.questions;
 		if (this.props.buffer.length !== 0) {
 			let qstn = questions[this.props.buffer[0]];
 			let data = {
