@@ -6,7 +6,6 @@ import {
 	updateTitle,
 	updateDescription,
 	updateTestAccess,
-	updateTestData,
 	updateTestDuration,
 	updateTestAccessKey
 } from './../../redux/actions/Test.js';
@@ -62,7 +61,7 @@ class Test extends Component {
 						class="custom-control-input"
 						id="switch2"
 						checked={this.props.test.fields.access === 1}
-						onClick={(ev) => this.props.newAccess((this.props.test.fields.access + 1) % 2)}
+						onClick={(ev) => this.props.newAccess((this.props.test.fields.access + 1) % 2)} //Change the access b/w 0 and 1
 					/>
 					<label class="custom-control-label" for="switch2">
 						private
@@ -89,10 +88,10 @@ class Test extends Component {
 					<button
 						className="material-icons ml-2 p-0 btn btn-light"
 						onClick={(ev) => {
-							let link = ev.target.previousSibling;
+							let link = ev.target.previousSibling; //Any sigling tag just before this tag in this case input
 							link.select();
 							link.setSelectionRange(0, 99999);
-							document.execCommand('copy');
+							document.execCommand('copy'); //Copying link
 						}}
 					>
 						file_copy

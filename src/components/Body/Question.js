@@ -24,11 +24,9 @@ class Question extends Component {
 				) : (
 					<React.Fragment>
 						<div className="d-flex flex-row">
-							<h1 className={[ 'ml-2 mt-4', styles.qno ].join(' ')}>
-								<span className="mr-4 mt-0 pt-0">Q.{this.props.active + 1}</span>
-							</h1>
+							<h1 className={[ 'ml-2 mt-4 mr-2', styles.qno ].join(' ')}>Q.{this.props.active + 1}</h1>
 							<textarea
-								className={[ 'mt-4 form-control', styles.qtext ].join(' ')}
+								className="mt-4 form-control"
 								value={this.props.question.fields.text}
 								onChange={(ev) => this.props.updateActiveQuestionText(ev.target.value)}
 								placeholder="Write your question text here"
@@ -41,7 +39,7 @@ class Question extends Component {
 						<br />
 
 						{this.props.question.fields.type === 'O' || this.props.question.fields.type === 'M' ? (
-							<Choices />
+							<Choices /> //Fout choices and handling updating answer of the question
 						) : (
 							''
 						)}
@@ -67,7 +65,9 @@ class Question extends Component {
 								className={[ 'form-control ml-4', styles.marksinp ].join(' ')}
 								value={this.props.question.fields.marks}
 								type="number"
-								onChange={(ev) => this.props.updateMarks(parseInt(ev.target.value))}
+								min="0"
+								onChange={(ev) =>
+									this.props.updateMarks(parseInt(ev.target.value === '' ? 0 : ev.target.value))}
 							/>
 							<br />
 							<label className="mt-4">Question Type:</label>

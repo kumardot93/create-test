@@ -17,10 +17,12 @@ function Image(props) {
 					let reader = new FileReader();
 
 					reader.onload = (event) => {
+						//needs more optomised preprocessing for sending over sockets
 						let res = event.target.result;
 						var byteArray = new Uint8Array(res);
 						let data = Array.from(byteArray);
 						let dict = {
+							//Format for sending data to backend
 							type: 'imageUpload',
 							payload: {
 								key: props.question.pk,
@@ -33,7 +35,7 @@ function Image(props) {
 						props.addToDataBuffer(dict);
 						props.putSpinner(props.active);
 					};
-					reader.readAsArrayBuffer(file);
+					reader.readAsArrayBuffer(file); //Preprocessing image by converting it to array for sendingit bya socket
 				}}
 			/>
 			<div
