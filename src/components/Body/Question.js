@@ -18,11 +18,8 @@ import {
 class Question extends Component {
 	render() {
 		return (
-			<div id={styles.questionMain} className="p-1 ml-2 flex-grow-1 mr-1 bg-light pr-4">
+			<div id={styles.questionMain} className="p-1 ml-2 flex-fill mr-1 bg-light pr-4">
 				{this.props.question === undefined || this.props.active === -1 ? (
-					// <div className="d-flex flex-row justify-content-center align-items-center h-100 w-100">
-					// 	<h1 className="text-muted">No Question Selected</h1>
-					// </div>
 					<Test />
 				) : (
 					<React.Fragment>

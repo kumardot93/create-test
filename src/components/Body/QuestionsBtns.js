@@ -15,7 +15,7 @@ class QuestionsBtns extends Component {
 					key={index}
 					onClick={() => this.props.updateActive(index)}
 					//update active questin on change also push to buffer for sending to backend i there is any change se the corrosponding action in redux/action/Top.js
-					disabled={index === this.props.active}
+					disabled={index === this.props.active} //Disabled so that user cannotdo multiple cicks on same button
 				>
 					{index + 1}
 				</button>
@@ -23,7 +23,6 @@ class QuestionsBtns extends Component {
 		});
 		return (
 			<div id={styles.qBtnsCont}>
-				{' '}
 				<button
 					className={[ 'btn btn-dark m-2 form-control w-25', styles.btns ].join(' ')}
 					onClick={() => this.props.updateActive(-1)}
@@ -31,7 +30,7 @@ class QuestionsBtns extends Component {
 					disabled={-1 === this.props.active}
 				>
 					Test
-				</button>{' '}
+				</button>
 				{questions}
 			</div>
 		);

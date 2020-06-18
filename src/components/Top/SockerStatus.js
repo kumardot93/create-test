@@ -3,9 +3,10 @@ import styles from './css/SocketStatus.module.css';
 
 import { connect } from 'react-redux';
 
+//Displays the status of socket line conected, saving saved etc.
 function SocketStatus(props) {
 	let disp = 'default';
-
+	//Renders msg according to the state of the socket
 	switch (props.socketStatus) {
 		case 'connecting':
 		case 'saving':
@@ -13,6 +14,7 @@ function SocketStatus(props) {
 			disp = (
 				<h6 className="text-muted mb-0 pb-0" id={styles.status}>
 					{props.socketStatus}
+					{/* Blinking dots */}
 					<span id={styles.dot1}>.</span>
 					<span id={styles.dot2}>.</span>
 					<span id={styles.dot3}>.</span>

@@ -29,11 +29,10 @@
 @media only screen and (max-width: 950px) {
 	#sidebarMain {
 		width: 98%;
-		height: auto;
-		min-height: 120px;
+		min-height: 100px;
 		max-height: 25vh;
+		height: auto;
 		margin-bottom: 4px;
-		overflow-y: auto;
-		overflow-x: hidden;
+		overflow: hidden;
 	}
 }

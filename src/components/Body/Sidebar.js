@@ -23,6 +23,7 @@ class Sidebar extends Component {
 						</button>
 					</h1>
 					{/* Container of all the qustion numbers as buttons to navigate */}
+
 					<QuestionsBtns />
 				</div>
 				{/* Container of the Question body */}
