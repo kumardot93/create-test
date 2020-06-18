@@ -23,27 +23,25 @@ const Test = (state = { active: -1, questions: [], fields: {}, changed: 0 }, act
 				}
 			];
 			if (state.active !== -1) {
-				state.questions[state.active].changed = 0;
+				state.questions[state.active].changed = 0; //changing changes status of changed for question as it was added to buffer in the action
 			} else if (state.active === -1) {
-				state.changed = 0;
+				state.changed = 0; //changing status of changes for test as it was added to buffer in corrosponding action
 			}
 			state.active = state.questions.length - 1;
 			break;
 		case 'updatePk':
-			console.log(action);
 			state.questions[action.payload.index].pk = action.payload.pk;
 			state.questions[action.payload.index] = { ...state.questions[action.payload.index] };
-			console.log(state.questions[action.payload.index]);
 			break;
 		case 'updateActive':
 			if (state.active !== -1) {
-				state.questions[state.active].changed = 0;
+				state.questions[state.active].changed = 0; //changing changes status of changed for question as it was added to buffer in the action
 			} else if (state.active === -1) {
-				state.changed = 0;
+				state.changed = 0; //changing status of changes for test as it was added to buffer in corrosponding action
 			}
 			state.active = action.payload;
 			break;
-		case 'updateTestTitle':
+		case 'updateTestTitle': //Not changing the memory location ({...state}) as it was done initially in the first line same for the next few cases
 			state.fields.title = action.payload;
 			state.changed = 1;
 			break;
@@ -96,7 +94,7 @@ const Test = (state = { active: -1, questions: [], fields: {}, changed: 0 }, act
 			state.questions[state.active].changed = 1;
 			state.questions[state.active] = { ...state.questions[state.active] };
 			break;
-		case 'imageUploaded':
+		case 'imageUploaded': //Used by socket when image is uploaded ans socket receive teh path of the image
 			state.questions[action.payload.index].fields.image = action.payload.image;
 			state.questions[action.payload.index] = { ...state.questions[action.payload.index] };
 			break;

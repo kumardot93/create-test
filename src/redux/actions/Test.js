@@ -1,5 +1,5 @@
 import store from './../Store.js';
-import { addToBuffer, addToDataBuffer } from './SocketState.js';
+import { addToBuffer, addToDataBuffer } from './SocketState.js'; //addToBuffer has a higher priority over addToDataBuffer
 
 export function updateTestData(data) {
 	let questions = data.questions.map((data) => {
@@ -14,6 +14,21 @@ export function updateTestData(data) {
 	};
 }
 
+export function AddingToBuffer() {
+	let test = store.getState().Test;
+	if (test.active !== -1)
+		if (test.questions[test.active].changed === 1) {
+			store.dispatch(addToBuffer(test.active)); //Add to buffer adds index of the changes question and does the preprocessing just before sending
+			return;
+		}
+	//Push the index of the last active question to the buffer of Socket State if there is any change
+	if (test.active === -1 && test.changed === 1) {
+		let dict = { type: 'testUpdate', payload: test.fields }; //organizing data as it is to be sent to the backend through socket
+		dict = JSON.stringify(dict);
+		store.dispatch(addToDataBuffer(dict)); //addToDataBuffer sends data to backend through socket as it is
+	}
+}
+
 export function newQuestion() {
 	AddingToBuffer();
 	return {
@@ -22,25 +37,11 @@ export function newQuestion() {
 }
 
 export function updatePk(index, pk) {
+	//used by socket manager  when new question is saved to backend ans socket receives its pk
 	return {
 		type: 'updatePk',
 		payload: { index, pk }
 	};
-}
-
-export function AddingToBuffer() {
-	let test = store.getState().Test;
-	if (test.active !== -1)
-		if (test.questions[test.active].changed === 1) {
-			store.dispatch(addToBuffer(test.active));
-			return;
-		}
-	//Push the index of the last active question to the buffer of Socket State if there is any change
-	if (test.active === -1 && test.changed === 1) {
-		let dict = { type: 'testUpdate', payload: test.fields };
-		dict = JSON.stringify(dict);
-		store.dispatch(addToDataBuffer(dict));
-	}
 }
 
 export function updateActive(index) {
