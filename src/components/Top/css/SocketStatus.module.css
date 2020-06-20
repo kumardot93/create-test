@@ -65,10 +65,19 @@
 	}
 }
 
+.socketError {
+	font-size: x-small;
+	margin-top: -14px;
+	margin-left: -6px;
+}
+
 @media only screen and (max-width: 800px) {
 	#status {
 		position: relative;
 		font-size: 2.25vw;
 		top: 6px;
+	}
+	.socketError {
+		font-size: 40%;
 	}
 }

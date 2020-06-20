@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 
 import store from './redux/Store.js';
 import { connect } from 'react-redux';
-import { imageUploaded, updateActive, updatePk } from './redux/actions/Test.js';
+import { updateTestData, imageUploaded, updateActive, updatePk } from './redux/actions/Test.js';
 import {
 	setSocket,
 	connected,
@@ -20,13 +20,14 @@ class SocketManager extends Component {
 		super(props);
 		this.error = 0;
 		this.ws = null;
+		this.test_initilized = 0;
 	}
 
 	InitilizeBackend = () => {
 		// initilizing backend for test
 		let key = extractKey(); //getting pk of test
 		key = parseInt(key);
-		let raw_data = { type: 'initilization', payload: key }; //formatting according to backend
+		let raw_data = { type: 'initilization', payload: { key: key, test_initilized: this.test_initilized } }; //formatting according to backend
 		this.ws.send(JSON.stringify(raw_data));
 	};
 
@@ -47,7 +48,9 @@ class SocketManager extends Component {
 			let msg = JSON.parse(ev.data); // received data as json string so parse
 			switch (msg.type) {
 				case 'connected':
+					if (this.test_initilized === 0) this.props.updateTestData(msg.testData);
 					this.props.socketConnected(); // setting is ready flag of socket state to 1
+					this.test_initilized = 1;
 					break;
 				case 'saved': // saved question
 					this.error = 0;
@@ -157,6 +160,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
+		updateTestData: (data) => dispatch(updateTestData(data)), //to store the test data received from backend
 		setSocket: (ws) => dispatch(setSocket(ws)),
 		socketConnected: () => dispatch(connected()),
 		sendingData: () => dispatch(sending()),
