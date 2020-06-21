@@ -5,15 +5,7 @@ import Image from './Image.js';
 import Test from './Test.js';
 
 import { connect } from 'react-redux';
-import {
-	updateActiveQuestionText,
-	updateAnswer,
-	updateMarks,
-	updateType,
-	updateTitle,
-	updateDescription,
-	updateTestData
-} from './../../redux/actions/Test.js';
+import { updateActiveQuestionText, updateAnswer, updateMarks, updateType } from './../../redux/actions/Test.js';
 
 class Question extends Component {
 	render() {
@@ -38,7 +30,12 @@ class Question extends Component {
 						<Image />
 						<br />
 
-						{this.props.question.fields.type === 'O' || this.props.question.fields.type === 'M' ? (
+						{this.props.question.fields.type === 'O' ||
+						this.props.question.fields.type === 'M' ||
+						this.props.question.fields.type === 'ON' ||
+						this.props.question.fields.type === 'MP' ||
+						this.props.question.fields.type === 'MN' ||
+						this.props.question.fields.type === 'MPN' ? (
 							<Choices /> //Fout choices and handling updating answer of the question
 						) : (
 							''
@@ -78,9 +75,13 @@ class Question extends Component {
 							>
 								<option value="">---------</option>
 								<option value="D">Descriptive</option>
-								<option value="O">One_Option_Correct</option>
-								<option value="M">Multu_Option_Correct</option>
 								<option value="F">Fill</option>
+								<option value="O">One Option Correct</option>
+								<option value="ON">One Option Correct(Negative Marking)</option>
+								<option value="M">Multu Option Correct</option>
+								<option value="MP">Multu Option Correct(Partially correct)</option>
+								<option value="MN">Multu Option Correct(Negative Marking)</option>
+								<option value="MPN">Multu Option Correct(Patrially correct and Neative marking)</option>
 							</select>
 						</div>
 					</React.Fragment>

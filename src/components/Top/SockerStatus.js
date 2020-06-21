@@ -38,19 +38,23 @@ function SocketStatus(props) {
 		case 'error':
 			disp = (
 				<h6 className={[ 'text-muted', styles.socketError ].join(' ')} id={styles.status}>
-					Error: Your changes won't be save try refreshing the page and report if error prsists
+					{navigator.onLine ? ( //when online
+						"Error: Your changes won't be save try refreshing the page and report if error prsists"
+					) : (
+						"Offline: Your changes won't be saved unless connected"
+					)}
 				</h6>
 			);
 			break;
 		default:
 			break;
 	}
-	disp = (
-		<h6 className={[ 'text-muted', styles.socketError ].join(' ')} id={styles.status}>
-			Error: Your changes won't be save try refreshing the page and report if error prsists
-		</h6>
+
+	return (
+		<div className="ml-4 pb-0 mt-4" id={styles.socketState}>
+			{disp}
+		</div>
 	);
-	return <div className="ml-4 pb-0 mt-4">{disp}</div>;
 }
 
 const mapStateToProps = (state) => {

@@ -97,13 +97,20 @@ class SocketManager extends Component {
 
 		//if there is any error in connection this function will try to reconnect after 15 seconds
 		this.ws.onerror = (ev) => {
-			console.log('error');
 			this.error += 1;
 			if (this.error < 5) {
-				this.props.disconnected();
+				this.props.disconnected(); //Socket state to reconecting
 				setTimeout(this.NewWebSocket, 5000);
 			} else {
-				this.props.SocketError();
+				this.props.SocketError(); //Error msg for scoket state
+				this.error = 1; //To try for connection for 4 time also not 0 otherwise onclose will alsotrigerred and infinite loop will be trigered
+				if (!navigator.onLine) {
+					window.ononline = () => {
+						//to connect agan if internet is down and it connects again
+						this.props.disconnected();
+						this.NewWebSocket();
+					};
+				}
 			}
 		};
 	};

@@ -78,12 +78,19 @@ const Test = (state = { active: -1, questions: [], fields: {}, changed: 0 }, act
 			break;
 		case 'updateActiveQuestionType':
 			state.questions[state.active].fields.type = action.payload;
-			state.questions[state.active].changed = 1;
-			if (action.payload == 'O' || action.payload == 'M') {
+			if (
+				action.payload === 'O' ||
+				action.payload === 'M' ||
+				this.props.question.fields.type === 'ON' ||
+				this.props.question.fields.type === 'MP' ||
+				this.props.question.fields.type === 'MN' ||
+				this.props.question.fields.type === 'MPN'
+			) {
 				state.questions[state.active].fields.answer = '0000';
 			} else {
 				state.questions[state.active].fields.answer = '';
 			}
+			state.questions[state.active].changed = 1;
 			state.questions[state.active] = { ...state.questions[state.active] };
 			break;
 		case 'updateActiveChoices':

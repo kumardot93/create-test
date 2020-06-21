@@ -74,10 +74,16 @@
 @media only screen and (max-width: 800px) {
 	#status {
 		position: relative;
-		font-size: 2.25vw;
+		font-size: x-small;
 		top: 6px;
 	}
 	.socketError {
 		font-size: 40%;
+	}
+	#socketState {
+		position: fixed;
+		left: 0;
+		bottom: 4px;
+		max-width: 55%;
 	}
 }
