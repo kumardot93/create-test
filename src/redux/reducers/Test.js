@@ -81,10 +81,10 @@ const Test = (state = { active: -1, questions: [], fields: {}, changed: 0 }, act
 			if (
 				action.payload === 'O' ||
 				action.payload === 'M' ||
-				this.props.question.fields.type === 'ON' ||
-				this.props.question.fields.type === 'MP' ||
-				this.props.question.fields.type === 'MN' ||
-				this.props.question.fields.type === 'MPN'
+				action.payload === 'ON' ||
+				action.payload === 'MP' ||
+				action.payload === 'MN' ||
+				action.payload === 'MPN'
 			) {
 				state.questions[state.active].fields.answer = '0000';
 			} else {
