@@ -10,7 +10,7 @@ class Choices extends Component {
 		let ans = this.props.question.fields.answer;
 		ans = ans.split('');
 		ans = ans.map((data) => parseInt(data));
-		if (this.props.question.fields.type === 'O') {
+		if (this.props.question.fields.type[0] === 'O') {
 			ans = [ 0, 0, 0, 0 ];
 			ans[index - 1] = 1;
 		} else {
