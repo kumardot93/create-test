@@ -5,9 +5,19 @@ import Image from './Image.js';
 import Test from './Test.js';
 
 import { connect } from 'react-redux';
-import { updateActiveQuestionText, updateAnswer, updateMarks, updateType } from './../../redux/actions/Test.js';
+import {
+	updateActiveQuestionText,
+	updateAnswer,
+	updateMarks,
+	updateType,
+	deleteQuestion
+} from './../../redux/actions/Test.js';
 
 class Question extends Component {
+	deleteQuestion = (event) => {
+		this.props.deleteQuestion(this.props.active, this.props.question.pk);
+	};
+
 	render() {
 		return (
 			<div id={styles.questionMain} className="p-1 ml-2 flex-fill mr-1 bg-light pr-4">
@@ -83,6 +93,9 @@ class Question extends Component {
 								<option value="MN">Multu Option Correct(Negative Marking)</option>
 								<option value="MPN">Multu Option Correct(Patrially correct and Neative marking)</option>
 							</select>
+							<button className="btn btn-danger mt-4 float-right" onClick={this.deleteQuestion}>
+								Delete
+							</button>
 						</div>
 					</React.Fragment>
 				)}
@@ -105,7 +118,8 @@ const mapDispatchToProps = (dispatch) => {
 		updateActiveQuestionText: (text) => dispatch(updateActiveQuestionText(text)),
 		updateAnswer: (ans) => dispatch(updateAnswer(ans)),
 		updateMarks: (marks) => dispatch(updateMarks(marks)),
-		updateType: (val) => dispatch(updateType(val))
+		updateType: (val) => dispatch(updateType(val)),
+		deleteQuestion: (index, pk) => dispatch(deleteQuestion(index, pk))
 	};
 };
 

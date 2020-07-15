@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import SocketManager from './SocketManager.js';
 
 window.base = 'http://localhost:8000';
-window.hostName = window.location.host; //For web socket connection
+window.hostName = 'localhost:8000'; //For web socket connection
 window.media_url = window.base + '/media/';
 // window.media_url = 'https://eduhub.blob.core.windows.net/eduhub/'; //For production
 window.cred = 'include'; //change to same-origin for production

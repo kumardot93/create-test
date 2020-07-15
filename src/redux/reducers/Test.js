@@ -61,6 +61,10 @@ const Test = (state = { active: -1, questions: [], fields: {}, changed: 0 }, act
 			state.fields.duration = action.payload;
 			state.changed = 1;
 			break;
+		case 'deleteQuestion':
+			state.questions.splice(action.payload, 1);
+			state.active -= 1;
+			break;
 		case 'updateActiveQuestionText':
 			state.questions[state.active].fields.text = action.payload;
 			state.questions[state.active].changed = 1;

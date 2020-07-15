@@ -52,6 +52,18 @@ export function updateActive(index) {
 	};
 }
 
+export function deleteQuestion(index, pk) {
+	let req = {
+		type: 'deleteQuestion',
+		payload: pk
+	};
+	store.dispatch(addToDataBuffer(JSON.stringify(req)));
+	return {
+		type: 'deleteQuestion',
+		payload: index
+	};
+}
+
 export function updateActiveQuestionText(text) {
 	return {
 		type: 'updateActiveQuestionText',

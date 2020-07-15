@@ -11,26 +11,41 @@ class QuestionsBtns extends Component {
 		questions = this.props.questions.map((data, index) => {
 			return (
 				<button
-					className={[ 'btn btn-dark m-2', styles.btns ].join(' ')}
+					className={[
+						'btn m-2',
+						styles.btns,
+						index === this.props.active ? styles.active + ' btn-primary' : 'btn-dark'
+					].join(' ')}
 					key={index}
 					onClick={() => this.props.updateActive(index)}
 					//update active questin on change also push to buffer for sending to backend i there is any change se the corrosponding action in redux/action/Top.js
-					disabled={index === this.props.active} //Disabled so that user cannotdo multiple cicks on same button
 				>
 					{index + 1}
 				</button>
 			);
 		});
 		return (
-			<div id={styles.qBtnsCont}>
-				<button
-					className={[ 'btn btn-dark m-2 form-control w-25', styles.btns ].join(' ')}
-					onClick={() => this.props.updateActive(-1)}
-					//update active questin to test data also push to buffer for sending to backend i there is any change se the corrosponding action in redux/action/Top.js
-					disabled={-1 === this.props.active}
-				>
-					Test
-				</button>
+			<div id={styles.qBtnsCont} className="d-block m-1">
+				<div className={[ 'align-items-stretch', this.props.menuDisplay, styles.bottomNav ].join(' ')}>
+					<button
+						className={[ 'btn m-1', -1 === this.props.active ? 'btn-primary' : 'btn-light' ].join(' ')}
+						onClick={() => this.props.updateActive(-1)}
+						//update active questin to test data also push to buffer for sending to backend i there is any change se the corrosponding action in redux/action/Top.js
+						active={-1 === this.props.active}
+					>
+						Test Description
+					</button>
+					<button className={[ 'btn m-1', 'btn-light' ].join(' ')} disabled={true}>
+						Camera
+					</button>
+					<button className={[ 'btn m-1', 'btn-light' ].join(' ')} disabled={true}>
+						Request Feature
+					</button>
+					<button className={[ 'btn m-1 mt-auto', 'btn-warning' ].join(' ')} disabled={true}>
+						Help Desk
+					</button>
+				</div>
+
 				{questions}
 			</div>
 		);
