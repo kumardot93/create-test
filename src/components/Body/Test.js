@@ -11,6 +11,17 @@ import {
 } from './../../redux/actions/Test.js';
 
 class Test extends Component {
+	state = {
+		tooltipStyle: { display: 'none' }
+	};
+	tooltipManager = (event, caller = 0) => {
+		if (caller) {
+			this.setState({ tooltipStyle: { display: 'none' } });
+			return;
+		}
+		if (this.state.tooltipStyle.display === 'none') this.setState({ tooltipStyle: { display: 'inline-block' } });
+		else this.setState({ tooltipStyle: { display: 'none' } });
+	};
 	render() {
 		let marks = 0;
 		this.props.questions.forEach((data) => {
@@ -47,7 +58,20 @@ class Test extends Component {
 							this.props.newDuration(ev.target.value == '' ? -1 : parseInt(ev.target.value))}
 					/>
 				</div>
-				<label className="mt-3">Description:</label>
+				<label className="mt-3" style={{ position: 'relative' }}>
+					Description:<button
+						className={[ ' ml-2 p-0 clearButton', styles.tooltip ].join(' ')}
+						onClick={this.tooltipManager}
+						style={this.state.tooltipStyle.display === 'none' ? {} : { color: 'green' }}
+						onBlur={(event) => this.tooltipManager(event, 1)}
+					>
+						<sub className="material-icons">help</sub>
+					</button>
+					<span className={styles.tooltiptext} style={this.state.tooltipStyle}>
+						Description should contain all the information releated to the test, question pattents, sections
+						in test and guidelines in will formatted manner
+					</span>
+				</label>
 				<textarea
 					className="form-control mb-4"
 					id={styles.desc}
@@ -81,7 +105,7 @@ class Test extends Component {
 					<label>Link:</label>
 					<input
 						className="ml-2 form-control w-50 d-inline"
-						value={window.location.origin + '/material/student-test/' + this.props.test.pk}
+						value={window.location.origin + '/studentTest/student-testSA/' + this.props.test.pk}
 					>
 						{/* {window.location.origin + '/material/student-test/' + this.props.test.pk} */}
 					</input>

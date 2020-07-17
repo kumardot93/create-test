@@ -36,9 +36,6 @@ class QuestionsBtns extends Component {
 						Test Description
 					</button>
 					<button className={[ 'btn m-1', 'btn-light' ].join(' ')} disabled={true}>
-						Camera
-					</button>
-					<button className={[ 'btn m-1', 'btn-light' ].join(' ')} disabled={true}>
 						Request Feature
 					</button>
 					<button className={[ 'btn m-1 mt-auto', 'btn-warning' ].join(' ')} disabled={true}>
