@@ -7,7 +7,8 @@ import {
 	updateDescription,
 	updateTestAccess,
 	updateTestDuration,
-	updateTestAccessKey
+	updateTestAccessKey,
+	switchRevealAnswers
 } from './../../redux/actions/Test.js';
 
 class Test extends Component {
@@ -36,10 +37,10 @@ class Test extends Component {
 					value={this.props.test.fields.title}
 					onChange={(event) => this.props.updateTitle(event.target.value)}
 				/>
-				<div class="custom-control custom-switch mt-2 d-flex flex-row align-items-center">
+				<div className="custom-control custom-switch mt-2 d-flex flex-row align-items-center">
 					<input
 						type="checkbox"
-						class="custom-control-input"
+						className="custom-control-input"
 						id="switch"
 						checked={this.props.test.fields.duration !== -1}
 						onChange={(ev) =>
@@ -47,7 +48,7 @@ class Test extends Component {
 								? this.props.newDuration(-1)
 								: this.props.newDuration(10)}
 					/>
-					<label class="custom-control-label" for="switch">
+					<label className="custom-control-label" htmlFor="switch">
 						Duration(minutes):
 					</label>
 					<input
@@ -79,15 +80,27 @@ class Test extends Component {
 					value={this.props.test.fields.description}
 					onChange={(event) => this.props.updateDescription(event.target.value)}
 				/>
-				<div class="custom-control custom-switch mt-2 d-flex flex-row align-items-center">
+				<div className="custom-control custom-switch mt-2 mb-3 d-flex flex-row align-items-center">
 					<input
 						type="checkbox"
-						class="custom-control-input"
 						id="switch2"
-						checked={this.props.test.fields.access === 1}
-						onClick={(ev) => this.props.newAccess((this.props.test.fields.access + 1) % 2)} //Change the access b/w 0 and 1
+						className="custom-control-input"
+						checked={this.props.test.fields.revealAnswers}
+						onClick={(ev) => this.props.switchRevealAnswers()} //switch boolean value of reveal answers
 					/>
-					<label class="custom-control-label" for="switch2">
+					<label className="custom-control-label" htmlFor="switch2">
+						Reveal Answers
+					</label>
+				</div>
+				<div className="custom-control custom-switch mt-2 d-flex flex-row align-items-center">
+					<input
+						type="checkbox"
+						id="switch3"
+						className="custom-control-input"
+						checked={this.props.test.fields.access === 1}
+						onChange={(ev) => this.props.newAccess((this.props.test.fields.access + 1) % 2)} //Change the access b/w 0 and 1
+					/>
+					<label className="custom-control-label" htmlFor="switch3">
 						private
 					</label>
 				</div>
@@ -133,6 +146,7 @@ class Test extends Component {
 }
 
 const mapStateToProps = (state) => {
+	console.log(state.Test);
 	return {
 		test: state.Test,
 		questions: state.Test.questions
@@ -145,7 +159,8 @@ const mapDispatchToProps = (dispatch) => {
 		updateDescription: (data) => dispatch(updateDescription(data)),
 		newDuration: (time) => dispatch(updateTestDuration(time)),
 		newAccess: (acc) => dispatch(updateTestAccess(acc)),
-		newAccessKey: (ak) => dispatch(updateTestAccessKey(ak))
+		newAccessKey: (ak) => dispatch(updateTestAccessKey(ak)),
+		switchRevealAnswers: () => dispatch(switchRevealAnswers())
 	};
 };
 

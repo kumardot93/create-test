@@ -31,7 +31,6 @@ class QuestionsBtns extends Component {
 						className={[ 'btn m-1', -1 === this.props.active ? 'btn-primary' : 'btn-light' ].join(' ')}
 						onClick={() => this.props.updateActive(-1)}
 						//update active questin to test data also push to buffer for sending to backend i there is any change se the corrosponding action in redux/action/Top.js
-						active={-1 === this.props.active}
 					>
 						Test Description
 					</button>

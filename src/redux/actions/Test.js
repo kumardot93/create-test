@@ -120,6 +120,13 @@ export function updateDescription(data) {
 	};
 }
 
+export function switchRevealAnswers() {
+	return {
+		type: 'switchRevealAnswers',
+		payload: null
+	};
+}
+
 export function updateTestAccess(data) {
 	return {
 		type: 'updateTestAccess',

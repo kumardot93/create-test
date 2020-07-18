@@ -49,6 +49,10 @@ const Test = (state = { active: -1, questions: [], fields: {}, changed: 0 }, act
 			state.fields.description = action.payload;
 			state.changed = 1;
 			break;
+		case 'switchRevealAnswers':
+			state.fields.revealAnswers = state.fields.revealAnswers ? false : true;
+			state.changed = 1;
+			break;
 		case 'updateTestAccess':
 			state.fields.access = action.payload;
 			state.changed = 1;
