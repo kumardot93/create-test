@@ -42,24 +42,28 @@
 	text-align: center;
 	font-size: large;
 }
-
-.tooltip {
+.tooltipWrapper {
+	display: inline-block;
 	position: relative;
+}
+
+.tooltipWrapper .tooltip {
 	display: inline-block;
 }
 
-.tooltiptext {
+.tooltipWrapper .tooltiptext {
 	position: absolute;
-	left: 110%;
+	left: calc(100% + 12px);
 	width: 250px;
 	background-color: black;
 	color: #fff;
 	padding: 1px 5px 2px 5px;
 	border-radius: 5px;
 	text-align: justify;
+	display: none;
 }
 
-.tooltiptext::after {
+.tooltipWrapper .tooltiptext::after {
 	content: '';
 	position: absolute;
 	right: 100%;
@@ -67,6 +71,9 @@
 	border-width: 5px;
 	border-style: solid;
 	border-color: transparent black transparent transparent;
+}
+.tooltipWrapper .tooltip:focus + .tooltiptext {
+	display: inline;
 }
 
 @media only screen and (max-width: 950px) {
@@ -96,13 +103,13 @@
 
 		margin-right: 25px;
 	}
-	.tooltiptext {
-		top: 125%;
-		left: 10%;
+	.tooltipWrapper .tooltiptext {
+		top: calc(100% + 10px);
+		left: -75px;
 		width: 220px;
 	}
 
-	.tooltiptext::after {
+	.tooltipWrapper .tooltiptext::after {
 		top: unset;
 		bottom: 100%;
 		left: 90px;

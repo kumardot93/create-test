@@ -1,10 +1,7 @@
 import ReactDOM from 'react-dom';
 import styles from './Body/css/OverlayForm.module.css';
 
-var CloseOverlay = (event, elid) => {
-	//function to close any activity with overlay
-	event.preventDefault();
-
+var CloseOverlay = (elid) => {
 	//appliying animation by changing styles id of the element
 	document.getElementById(elid).id = styles.unmount;
 	setTimeout(unmount, 350); //timeout function, callback called after animation

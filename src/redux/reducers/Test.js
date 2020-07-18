@@ -86,14 +86,7 @@ const Test = (state = { active: -1, questions: [], fields: {}, changed: 0 }, act
 			break;
 		case 'updateActiveQuestionType':
 			state.questions[state.active].fields.type = action.payload;
-			if (
-				action.payload === 'O' ||
-				action.payload === 'M' ||
-				action.payload === 'ON' ||
-				action.payload === 'MP' ||
-				action.payload === 'MN' ||
-				action.payload === 'MPN'
-			) {
+			if ([ 'O', 'M', 'ON', 'MP', 'MN', 'MNP' ].includes(action.payload)) {
 				state.questions[state.active].fields.answer = '0000';
 			} else {
 				state.questions[state.active].fields.answer = '';

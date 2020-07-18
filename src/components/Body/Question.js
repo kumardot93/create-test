@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import styles from './css/Question.module.css';
 import Choices from './Choices.js';
 import Image from './Image.js';
 import Test from './Test.js';
+import OverlayDeleteQuestion from './OverlayDeleteQuestion.js';
 
 import { connect } from 'react-redux';
 import {
@@ -14,8 +16,14 @@ import {
 } from './../../redux/actions/Test.js';
 
 class Question extends Component {
-	deleteQuestion = (event) => {
+	deleteQuestion = () => {
 		this.props.deleteQuestion(this.props.active, this.props.question.pk);
+	};
+
+	RequestQuestionDelete = (event) => {
+		let el = document.getElementById('overlay');
+		el.style.display = 'block';
+		ReactDOM.render(<OverlayDeleteQuestion qno={this.props.active + 1} deleteQuestion={this.deleteQuestion} />, el);
 	};
 
 	render() {
@@ -40,18 +48,9 @@ class Question extends Component {
 						<Image />
 						<br />
 
-						{this.props.question.fields.type === 'O' ||
-						this.props.question.fields.type === 'M' ||
-						this.props.question.fields.type === 'ON' ||
-						this.props.question.fields.type === 'MP' ||
-						this.props.question.fields.type === 'MN' ||
-						this.props.question.fields.type === 'MPN' ? (
+						{[ 'O', 'M', 'ON', 'MP', 'MN', 'MNP' ].includes(this.props.question.fields.type) ? (
 							<Choices /> //Fout choices and handling updating answer of the question
-						) : (
-							''
-						)}
-
-						{this.props.question.fields.type == 'F' ? (
+						) : this.props.question.fields.type === 'F' ? (
 							<React.Fragment>
 								<label className="ml-4 pl-4 mt-4">Answer:</label>
 								<input
@@ -63,6 +62,16 @@ class Question extends Component {
 									onChange={(ev) => this.props.updateAnswer(ev.target.value)}
 								/>
 							</React.Fragment>
+						) : this.props.question.fields.type === 'D' && this.props.test.fields.revealAnswers ? (
+							<div className="d-flex flex-row align-items-top mt-4">
+								<label className="ml-4 pl-4 mt-2 mr-4">Answer:</label>
+								<textarea
+									rows={4}
+									className="w-75 p-2"
+									value={this.props.question.fields.answer}
+									onChange={(ev) => this.props.updateAnswer(ev.target.value)}
+								/>
+							</div>
 						) : (
 							''
 						)}
@@ -93,8 +102,11 @@ class Question extends Component {
 								<option value="MN">Multu Option Correct(Negative Marking)</option>
 								<option value="MPN">Multu Option Correct(Patrially correct and Neative marking)</option>
 							</select>
-							<button className="btn btn-danger mt-4 float-right" onClick={this.deleteQuestion}>
-								Delete
+							<button
+								className="btn btn-danger mt-4 float-right material-icons"
+								onClick={this.RequestQuestionDelete}
+							>
+								delete
 							</button>
 						</div>
 					</React.Fragment>

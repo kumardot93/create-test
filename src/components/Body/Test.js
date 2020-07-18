@@ -12,17 +12,6 @@ import {
 } from './../../redux/actions/Test.js';
 
 class Test extends Component {
-	state = {
-		tooltipStyle: { display: 'none' }
-	};
-	tooltipManager = (event, caller = 0) => {
-		if (caller) {
-			this.setState({ tooltipStyle: { display: 'none' } });
-			return;
-		}
-		if (this.state.tooltipStyle.display === 'none') this.setState({ tooltipStyle: { display: 'inline-block' } });
-		else this.setState({ tooltipStyle: { display: 'none' } });
-	};
 	render() {
 		let marks = 0;
 		this.props.questions.forEach((data) => {
@@ -60,18 +49,16 @@ class Test extends Component {
 					/>
 				</div>
 				<label className="mt-3" style={{ position: 'relative' }}>
-					Description:<button
-						className={[ ' ml-2 p-0 clearButton', styles.tooltip ].join(' ')}
-						onClick={this.tooltipManager}
-						style={this.state.tooltipStyle.display === 'none' ? {} : { color: 'green' }}
-						onBlur={(event) => this.tooltipManager(event, 1)}
-					>
-						<sub className="material-icons">help</sub>
-					</button>
-					<span className={styles.tooltiptext} style={this.state.tooltipStyle}>
-						Description should contain all the information releated to the test, question pattents, sections
-						in test and guidelines in will formatted manner
-					</span>
+					Description:
+					<div className={styles.tooltipWrapper}>
+						<button className={[ ' ml-2 p-0 clearButton', styles.tooltip ].join(' ')}>
+							<sub className="material-icons">help</sub>
+						</button>
+						<span className={styles.tooltiptext}>
+							Description should contain all the information releated to the test, question pattents,
+							sections in test and guidelines in will formatted manner
+						</span>
+					</div>
 				</label>
 				<textarea
 					className="form-control mb-4"
@@ -80,7 +67,7 @@ class Test extends Component {
 					value={this.props.test.fields.description}
 					onChange={(event) => this.props.updateDescription(event.target.value)}
 				/>
-				<div className="custom-control custom-switch mt-2 mb-3 d-flex flex-row align-items-center">
+				<div className="custom-control custom-switch mt-2 mb-3 d-flex flex-row align-items-baseline">
 					<input
 						type="checkbox"
 						id="switch2"
@@ -91,6 +78,15 @@ class Test extends Component {
 					<label className="custom-control-label" htmlFor="switch2">
 						Reveal Answers
 					</label>
+					<div className={styles.tooltipWrapper}>
+						<button className={[ ' ml-2 p-0 clearButton', styles.tooltip ].join(' ')}>
+							<sub className="material-icons">help</sub>
+						</button>
+						<span className={styles.tooltiptext}>
+							Turning on reveal answer will allow students to see the actual answer after they submit the
+							test
+						</span>
+					</div>
 				</div>
 				<div className="custom-control custom-switch mt-2 d-flex flex-row align-items-center">
 					<input
