@@ -76,6 +76,12 @@
 	display: inline;
 }
 
+#imageUpload {
+	position: relative;
+	width: 85%;
+	left: 45px;
+}
+
 @media only screen and (max-width: 950px) {
 	#questionMain {
 		width: stretch;
@@ -116,5 +122,8 @@
 		border-width: 5px;
 		border-style: solid;
 		border-color: transparent transparent black transparent;
+	}
+	#imageUpload {
+		left: 7.5vw;
 	}
 }

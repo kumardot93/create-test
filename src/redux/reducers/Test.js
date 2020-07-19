@@ -14,7 +14,7 @@ const Test = (state = { active: -1, questions: [], fields: {}, changed: 0 }, act
 					fields: {
 						parent_test: state.pk,
 						text: '',
-						type: '',
+						type: 'D',
 						image: '',
 						marks: 0,
 						answer: '',

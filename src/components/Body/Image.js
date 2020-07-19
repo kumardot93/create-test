@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './css/Question.module.css';
 
 import { connect } from 'react-redux';
 import { addToDataBuffer } from './../../redux/actions/SocketState.js';
@@ -7,37 +8,43 @@ import { imageUploaded } from './../../redux/actions/Test.js';
 function Image(props) {
 	return (
 		<React.Fragment>
-			<input
-				className="ml-4 pl-4 mt-4"
-				type="file"
-				accept="image/*"
-				name="image"
-				onChange={(event) => {
-					let file = event.target.files[0];
-					let reader = new FileReader();
+			<div class="custom-file mt-4 mb-4 ml-4" id={styles.imageUpload}>
+				<input
+					className="custom-file-input"
+					id="customFile"
+					type="file"
+					accept="image/*"
+					name="image"
+					onChange={(event) => {
+						let file = event.target.files[0];
+						let reader = new FileReader();
 
-					reader.onload = (event) => {
-						//needs more optomised preprocessing for sending over sockets
-						let res = event.target.result;
-						var byteArray = new Uint8Array(res);
-						let data = Array.from(byteArray);
-						let dict = {
-							//Format for sending data to backend
-							type: 'imageUpload',
-							payload: {
-								key: props.question.pk,
-								name: file.name,
-								image: data,
-								index: props.active
-							}
+						reader.onload = (event) => {
+							//needs more optomised preprocessing for sending over sockets
+							let res = event.target.result;
+							var byteArray = new Uint8Array(res);
+							let data = Array.from(byteArray);
+							let dict = {
+								//Format for sending data to backend
+								type: 'imageUpload',
+								payload: {
+									key: props.question.pk,
+									name: file.name,
+									image: data,
+									index: props.active
+								}
+							};
+							dict = JSON.stringify(dict);
+							props.addToDataBuffer(dict);
+							props.putSpinner(props.active);
 						};
-						dict = JSON.stringify(dict);
-						props.addToDataBuffer(dict);
-						props.putSpinner(props.active);
-					};
-					reader.readAsArrayBuffer(file); //Preprocessing image by converting it to array for sendingit bya socket
-				}}
-			/>
+						reader.readAsArrayBuffer(file); //Preprocessing image by converting it to array for sendingit bya socket
+					}}
+				/>
+				<label class="custom-file-label" htmlFor="customFile">
+					Choose file
+				</label>
+			</div>
 			<div
 				className={props.question.fields.image}
 				role="status"

@@ -4,10 +4,6 @@ body {
 	background-color: rgb(247, 247, 247);
 }
 
-::-webkit-scrollbar {
-	display: none;
-}
-
 #overlay {
 	position: fixed;
 	height: 100vh;

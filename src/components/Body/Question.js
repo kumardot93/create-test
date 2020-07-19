@@ -64,10 +64,11 @@ class Question extends Component {
 							</React.Fragment>
 						) : this.props.question.fields.type === 'D' && this.props.test.fields.revealAnswers ? (
 							<div className="d-flex flex-row align-items-top mt-4">
-								<label className="ml-4 pl-4 mt-2 mr-4">Answer:</label>
+								<label className="pl-4 mr-4">Answer:</label>
 								<textarea
+									className="p-2 form-control"
 									rows={4}
-									className="w-75 p-2"
+									placeholder="Write your answer here..."
 									value={this.props.question.fields.answer}
 									onChange={(ev) => this.props.updateAnswer(ev.target.value)}
 								/>
@@ -92,15 +93,16 @@ class Question extends Component {
 								value={this.props.question.fields.type}
 								onChange={(ev) => this.props.updateType(ev.target.value)}
 							>
-								<option value="">---------</option>
 								<option value="D">Descriptive</option>
 								<option value="F">Fill</option>
 								<option value="O">One Option Correct</option>
 								<option value="ON">One Option Correct(Negative Marking)</option>
-								<option value="M">Multu Option Correct</option>
-								<option value="MP">Multu Option Correct(Partially correct)</option>
-								<option value="MN">Multu Option Correct(Negative Marking)</option>
-								<option value="MPN">Multu Option Correct(Patrially correct and Neative marking)</option>
+								<option value="M">Multiple Option Correct</option>
+								<option value="MP">Multile Option Correct(Partially correct)</option>
+								<option value="MN">Multiple Option Correct(Negative Marking)</option>
+								<option value="MPN">
+									Multiple Option Correct(Patrially correct and Neative marking)
+								</option>
 							</select>
 							<button
 								className="btn btn-danger mt-4 float-right material-icons"
